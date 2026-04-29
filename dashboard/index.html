@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aqari OS Dashboard</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --background: #f6f2ea;
+        --foreground: #1f2a37;
+        --muted: #5c6773;
+        --accent: #a44f2b;
+        --surface: rgba(255, 255, 255, 0.82);
+        --surface-strong: rgba(31, 42, 55, 0.92);
+        --border: rgba(31, 42, 55, 0.12);
+        --shadow: 0 18px 50px rgba(31, 42, 55, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at top right, rgba(164, 79, 43, 0.16), transparent 28%),
+          linear-gradient(180deg, #f8f4ee 0%, #f2ece3 100%);
+        color: var(--foreground);
+        font-family: Georgia, "Times New Roman", serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        padding: 40px 20px 80px;
+      }
+
+      .dashboard-hero,
+      .dashboard-metrics,
+      .dashboard-layout,
+      .topbar__inner {
+        width: min(1120px, 100%);
+        margin-inline: auto;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(14px);
+        background: rgba(248, 244, 238, 0.78);
+        border-bottom: 1px solid rgba(31, 42, 55, 0.08);
+      }
+
+      .topbar__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px 0;
+      }
+
+      .topbar__brand {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .topbar__brand strong {
+        font-size: 1rem;
+      }
+
+      .topbar__brand span {
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      .topbar__link {
+        padding: 10px 16px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.58);
+        font-weight: 700;
+      }
+
+      .dashboard-hero {
+        margin-bottom: 20px;
+        padding: 32px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.8fr) minmax(280px, 0.9fr);
+        gap: 18px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background:
+          linear-gradient(135deg, rgba(164, 79, 43, 0.1), rgba(255, 255, 255, 0.76)),
+          rgba(255, 255, 255, 0.74);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(14px);
+      }
+
+      .eyebrow,
+      .metric-card__label,
+      .panel__eyebrow {
+        margin: 0 0 10px;
+        color: var(--accent);
+        font-size: 0.84rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .dashboard-hero__title {
+        margin: 0;
+        max-width: 14ch;
+        font-size: clamp(2.2rem, 4.6vw, 4.2rem);
+        line-height: 1.02;
+      }
+
+      .dashboard-hero__description {
+        max-width: 56ch;
+        margin: 16px 0 0;
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 1.02rem;
+      }
+
+      .dashboard-hero__spotlight {
+        padding: 20px;
+        border: 1px solid rgba(31, 42, 55, 0.1);
+        border-radius: 8px;
+        background: var(--surface-strong);
+        color: #f6f2ea;
+      }
+
+      .dashboard-hero__spotlight strong {
+        display: block;
+        font-size: 1.7rem;
+        line-height: 1.15;
+      }
+
+      .dashboard-hero__spotlight p {
+        margin: 14px 0 0;
+        color: rgba(246, 242, 234, 0.82);
+        line-height: 1.7;
+      }
+
+      .dashboard-metrics {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .metric-card,
+      .panel {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .metric-card {
+        padding: 20px;
+      }
+
+      .metric-card strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: clamp(1.7rem, 3vw, 2.4rem);
+        line-height: 1;
+      }
+
+      .metric-card p:last-child {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .metric-card__change--positive {
+        color: #2d6a4f;
+      }
+
+      .dashboard-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.95fr);
+        gap: 18px;
+      }
+
+      .panel {
+        padding: 24px;
+      }
+
+      .panel__header {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        align-items: flex-start;
+        margin-bottom: 20px;
+      }
+
+      .panel__title {
+        margin: 0;
+        font-size: 1.45rem;
+        line-height: 1.15;
+      }
+
+      .panel__hint {
+        margin: 0;
+        max-width: 26ch;
+        color: var(--muted);
+        line-height: 1.5;
+        text-align: right;
+      }
+
+      .pipeline-list,
+      .task-list,
+      .channel-list,
+      .activity-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .pipeline-card,
+      .task-item,
+      .activity-item {
+        padding: 16px 18px;
+        border: 1px solid rgba(31, 42, 55, 0.09);
+        border-radius: 8px;
+        background: rgba(248, 244, 238, 0.75);
+      }
+
+      .pipeline-card__topline,
+      .channel-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: baseline;
+      }
+
+      .pipeline-card h3,
+      .task-item h3,
+      .activity-item h3 {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.35;
+      }
+
+      .pipeline-card__value {
+        display: block;
+        margin: 10px 0 6px;
+        font-size: 1.7rem;
+        line-height: 1;
+      }
+
+      .pipeline-card span,
+      .pipeline-card p,
+      .task-item p,
+      .task-item span,
+      .activity-item p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .task-item span {
+        display: inline-block;
+        color: #7c3e22;
+        font-weight: 700;
+      }
+
+      .channel-row {
+        padding: 14px 0;
+        border-bottom: 1px solid rgba(31, 42, 55, 0.08);
+      }
+
+      .channel-row:first-child {
+        padding-top: 4px;
+      }
+
+      .channel-row:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
+
+      .channel-row strong {
+        font-size: 1.2rem;
+      }
+
+      @media (max-width: 960px) {
+        .dashboard-hero,
+        .dashboard-layout,
+        .dashboard-metrics {
+          grid-template-columns: 1fr;
+        }
+
+        .panel__header,
+        .topbar__inner {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .panel__hint {
+          max-width: none;
+          text-align: left;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          padding: 20px 14px 48px;
+        }
+
+        .dashboard-hero,
+        .panel,
+        .metric-card {
+          padding: 20px 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__inner">
+        <div class="topbar__brand">
+          <strong>Aqari OS</strong>
+          <span>Platform dashboard preview</span>
+        </div>
+        <a class="topbar__link" href="/">Back to site</a>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="dashboard-hero">
+        <div>
+          <p class="eyebrow">Platform overview</p>
+          <h1 class="dashboard-hero__title">
+            Aqari OS keeps sales, content, and field ops in one operating view.
+          </h1>
+          <p class="dashboard-hero__description">
+            Teams can track demand, move listings faster, and monitor what the AI agent is
+            converting without jumping between tools.
+          </p>
+        </div>
+        <div class="dashboard-hero__spotlight">
+          <p class="eyebrow" style="color: rgba(246, 242, 234, 0.72)">Today</p>
+          <strong>14 appointments confirmed</strong>
+          <p>Highest demand is coming from New Cairo compounds and North Coast summer units.</p>
+        </div>
+      </section>
+
+      <section class="dashboard-metrics" aria-label="Key metrics">
+        <article class="metric-card">
+          <p class="metric-card__label">Qualified leads</p>
+          <strong>184</strong>
+          <p class="metric-card__change--positive">+12% this week</p>
+        </article>
+        <article class="metric-card">
+          <p class="metric-card__label">Active listings</p>
+          <strong>63</strong>
+          <p>8 need refreshed media</p>
+        </article>
+        <article class="metric-card">
+          <p class="metric-card__label">Site visits booked</p>
+          <strong>27</strong>
+          <p class="metric-card__change--positive">6 scheduled for today</p>
+        </article>
+        <article class="metric-card">
+          <p class="metric-card__label">AI close rate</p>
+          <strong>31%</strong>
+          <p class="metric-card__change--positive">+4 pts after follow-up flow</p>
+        </article>
+      </section>
+
+      <section class="dashboard-layout">
+        <section class="panel">
+          <div class="panel__header">
+            <div>
+              <p class="panel__eyebrow">Sales pipeline</p>
+              <h2 class="panel__title">Deal flow across the agency</h2>
+            </div>
+            <p class="panel__hint">Updated from CRM and AI qualification events</p>
+          </div>
+          <div class="pipeline-list">
+            <article class="pipeline-card">
+              <div class="pipeline-card__topline">
+                <h3>New inquiries</h3>
+                <span>46 deals</span>
+              </div>
+              <strong class="pipeline-card__value">EGP 412M</strong>
+              <p>Facebook, portal, and WhatsApp traffic</p>
+            </article>
+            <article class="pipeline-card">
+              <div class="pipeline-card__topline">
+                <h3>Qualified buyers</h3>
+                <span>24 deals</span>
+              </div>
+              <strong class="pipeline-card__value">EGP 228M</strong>
+              <p>Budget and location confirmed</p>
+            </article>
+            <article class="pipeline-card">
+              <div class="pipeline-card__topline">
+                <h3>Negotiation</h3>
+                <span>9 deals</span>
+              </div>
+              <strong class="pipeline-card__value">EGP 96M</strong>
+              <p>Waiting on payment plan approvals</p>
+            </article>
+            <article class="pipeline-card">
+              <div class="pipeline-card__topline">
+                <h3>Closing</h3>
+                <span>4 deals</span>
+              </div>
+              <strong class="pipeline-card__value">EGP 41M</strong>
+              <p>Contracts in legal review</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel__header">
+            <div>
+              <p class="panel__eyebrow">Operations</p>
+              <h2 class="panel__title">Priority queue</h2>
+            </div>
+          </div>
+          <div class="task-list">
+            <article class="task-item">
+              <h3>Refresh the Palm Hills inventory page</h3>
+              <p>Marketing ops</p>
+              <span>Due in 2 hours</span>
+            </article>
+            <article class="task-item">
+              <h3>Approve ad spend for North Coast launch</h3>
+              <p>Growth team</p>
+              <span>Needs approval today</span>
+            </article>
+            <article class="task-item">
+              <h3>Review pricing change on 3 listings</h3>
+              <p>Sales manager</p>
+              <span>Pending since yesterday</span>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel__header">
+            <div>
+              <p class="panel__eyebrow">Channels</p>
+              <h2 class="panel__title">Performance mix</h2>
+            </div>
+          </div>
+          <div class="channel-list">
+            <div class="channel-row">
+              <span>WhatsApp assistant</span>
+              <strong>42%</strong>
+            </div>
+            <div class="channel-row">
+              <span>Portal leads</span>
+              <strong>28%</strong>
+            </div>
+            <div class="channel-row">
+              <span>Paid social</span>
+              <strong>19%</strong>
+            </div>
+            <div class="channel-row">
+              <span>Organic website</span>
+              <strong>11%</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel__header">
+            <div>
+              <p class="panel__eyebrow">Recent activity</p>
+              <h2 class="panel__title">What changed in the last few hours</h2>
+            </div>
+          </div>
+          <div class="activity-list">
+            <article class="activity-item">
+              <h3>AI agent booked a viewing at Azha Sokhna</h3>
+              <p>Buyer replied in Egyptian Arabic and confirmed attendance for 6:30 PM.</p>
+            </article>
+            <article class="activity-item">
+              <h3>New seller onboarding completed</h3>
+              <p>8 units imported with photos, specs, and installment details.</p>
+            </article>
+            <article class="activity-item">
+              <h3>Lead scoring model flagged high intent demand</h3>
+              <p>Sheikh Zayed villas outperformed baseline by 18% this morning.</p>
+            </article>
+          </div>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>
