@@ -107,6 +107,12 @@
         font-size: 0.96rem;
       }
 
+      .topbar__actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
       .cta {
         display: inline-flex;
         align-items: center;
@@ -361,6 +367,12 @@
         gap: 16px;
       }
 
+      .showcase-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 16px;
+      }
+
       .panel {
         border: 1px solid var(--line);
         border-radius: 10px;
@@ -389,6 +401,142 @@
 
       .panel__body {
         padding: 18px;
+      }
+
+      .dashboard-surface {
+        display: grid;
+        gap: 14px;
+      }
+
+      .dashboard-metrics {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .dashboard-metric {
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.76);
+      }
+
+      .dashboard-metric strong {
+        display: block;
+        font-size: 1.45rem;
+        margin-bottom: 6px;
+      }
+
+      .dashboard-metric span {
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .pipeline-board {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .pipeline-column {
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.68);
+      }
+
+      .pipeline-column strong {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .pipeline-card {
+        padding: 12px;
+        border-radius: 8px;
+        background: #fff;
+        border: 1px solid rgba(24, 34, 48, 0.08);
+        box-shadow: 0 10px 24px rgba(24, 34, 48, 0.04);
+      }
+
+      .pipeline-card + .pipeline-card {
+        margin-top: 10px;
+      }
+
+      .pipeline-card b {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .pipeline-card span {
+        color: var(--muted);
+        font-size: 0.86rem;
+        line-height: 1.5;
+      }
+
+      .site-preview {
+        display: grid;
+        gap: 12px;
+      }
+
+      .preview-window {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 16px 36px rgba(24, 34, 48, 0.05);
+      }
+
+      .preview-window__bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--line);
+        background: #f7f1ea;
+      }
+
+      .preview-window__dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #d5b59e;
+      }
+
+      .preview-window__body {
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .preview-hero {
+        padding: 18px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, rgba(36, 68, 58, 0.96), rgba(24, 34, 48, 0.95));
+        color: #fff;
+      }
+
+      .preview-hero strong {
+        display: block;
+        font-size: 1.25rem;
+        margin-bottom: 8px;
+      }
+
+      .preview-strip {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .preview-box {
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(246, 241, 232, 0.74);
+      }
+
+      .preview-box strong {
+        display: block;
+        margin-bottom: 6px;
       }
 
       .builder-layout {
@@ -469,6 +617,35 @@
         gap: 16px;
       }
 
+      .journey-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .journey-step {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .journey-step b {
+        display: inline-grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 12px;
+        border-radius: 50%;
+        background: rgba(164, 82, 44, 0.12);
+        color: var(--accent);
+      }
+
+      .journey-step strong {
+        display: block;
+        margin-bottom: 8px;
+      }
+
       .price-card {
         padding: 26px;
         border: 1px solid var(--line);
@@ -532,9 +709,17 @@
       @media (max-width: 980px) {
         .hero__content,
         .platform-grid,
+        .showcase-grid,
         .feature-grid,
         .pricing-grid,
+        .journey-grid,
         .band__row {
+          grid-template-columns: 1fr;
+        }
+
+        .dashboard-metrics,
+        .pipeline-board,
+        .preview-strip {
           grid-template-columns: 1fr;
         }
 
@@ -594,6 +779,10 @@
           <a href="#ai">الوكيل الذكي</a>
           <a href="#pricing">الباقات</a>
         </nav>
+        <div class="topbar__actions">
+          <a class="cta cta--ghost" href="#workflow">رحلة العميل</a>
+          <a class="cta cta--solid" href="#pricing">ابدأ البيع</a>
+        </div>
       </div>
     </header>
 
@@ -712,6 +901,128 @@
           <article class="feature">
             <strong>صلاحيات حقيقية</strong>
             <p>المالك، مدير الفرع، السيلز، والماركتنج كل واحد يرى ما يخصه ويتحكم فيما يخصه فقط.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section__intro">
+          <div>
+            <p class="section__eyebrow">Live Product View</p>
+            <h2>هذا هو شكل التشغيل اليومي داخل Aqari.</h2>
+            <p>
+              صاحب الشركة لا يشتري صفحات جميلة فقط. هو يشتري رؤية يومية للعملاء والموظفين والعقارات
+              مع موقع دينامك يتحدث من نفس النظام.
+            </p>
+          </div>
+        </div>
+        <div class="showcase-grid">
+          <article class="panel">
+            <div class="panel__head">
+              <strong>Operations Dashboard</strong>
+              <span>Owner and sales manager view</span>
+            </div>
+            <div class="panel__body">
+              <div class="dashboard-surface">
+                <div class="dashboard-metrics">
+                  <div class="dashboard-metric">
+                    <strong>+32</strong>
+                    <span>طلبات جديدة اليوم</span>
+                  </div>
+                  <div class="dashboard-metric">
+                    <strong>18</strong>
+                    <span>معاينات مؤكدة</span>
+                  </div>
+                  <div class="dashboard-metric">
+                    <strong>7</strong>
+                    <span>صفقات في مرحلة العرض</span>
+                  </div>
+                  <div class="dashboard-metric">
+                    <strong>94%</strong>
+                    <span>سرعة استجابة الفريق والـ AI</span>
+                  </div>
+                </div>
+                <div class="pipeline-board">
+                  <div class="pipeline-column">
+                    <strong>New</strong>
+                    <div class="pipeline-card">
+                      <b>Sara H.</b>
+                      <span>Villa, Sheikh Zayed, budget 12M</span>
+                    </div>
+                    <div class="pipeline-card">
+                      <b>Youssef M.</b>
+                      <span>Apartment, New Cairo, wants visit</span>
+                    </div>
+                  </div>
+                  <div class="pipeline-column">
+                    <strong>Qualified</strong>
+                    <div class="pipeline-card">
+                      <b>Omar A.</b>
+                      <span>Developer project shortlist ready</span>
+                    </div>
+                  </div>
+                  <div class="pipeline-column">
+                    <strong>Showing</strong>
+                    <div class="pipeline-card">
+                      <b>Nour T.</b>
+                      <span>Visit booked for Friday 5:00 PM</span>
+                    </div>
+                  </div>
+                  <div class="pipeline-column">
+                    <strong>Proposal</strong>
+                    <div class="pipeline-card">
+                      <b>Mahmoud K.</b>
+                      <span>Reservation terms under review</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel__head">
+              <strong>Public Website Preview</strong>
+              <span>Builder-driven pages</span>
+            </div>
+            <div class="panel__body">
+              <div class="site-preview">
+                <div class="preview-window">
+                  <div class="preview-window__bar">
+                    <span class="preview-window__dot"></span>
+                    <span class="preview-window__dot"></span>
+                    <span class="preview-window__dot"></span>
+                  </div>
+                  <div class="preview-window__body">
+                    <div class="preview-hero">
+                      <strong>اكتشف عقارات القاهرة الجديدة والساحل من منصة واحدة</strong>
+                      <span>Search, featured projects, and instant inquiry capture</span>
+                    </div>
+                    <div class="preview-strip">
+                      <div class="preview-box">
+                        <strong>Featured Projects</strong>
+                        <span>سكشن متصل بالداتابيز</span>
+                      </div>
+                      <div class="preview-box">
+                        <strong>City Blocks</strong>
+                        <span>القاهرة الجديدة، زايد، الساحل</span>
+                      </div>
+                      <div class="preview-box">
+                        <strong>Instant Forms</strong>
+                        <span>يدخل مباشرة إلى الـ CRM</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="feature">
+                  <strong>الموقع ليس منفصلًا عن التشغيل</strong>
+                  <p>
+                    أي عقار يُنشر من الإدارة يظهر على الموقع، وأي نموذج أو رسالة من العميل تعود
+                    مباشرة لفريق المبيعات داخل المنصة.
+                  </p>
+                </div>
+              </div>
+            </div>
           </article>
         </div>
       </section>
@@ -906,6 +1217,40 @@
               <li>تحليلات AI</li>
               <li>جاهز لتوسعة WhatsApp</li>
             </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="workflow">
+        <div class="section__intro">
+          <div>
+            <p class="section__eyebrow">Lead Journey</p>
+            <h2>رحلة العميل من أول رسالة حتى الإغلاق.</h2>
+            <p>
+              أهم ما يميز Aqari أن رحلة العميل لا تنقطع بين الموقع والذكاء الاصطناعي وفريق المبيعات.
+            </p>
+          </div>
+        </div>
+        <div class="journey-grid">
+          <article class="journey-step">
+            <b>1</b>
+            <strong>العميل يكتشف العقار</strong>
+            <p>من الموقع، صفحة هبوط، أو حملة إعلانية مرتبطة بالعقارات الحقيقية.</p>
+          </article>
+          <article class="journey-step">
+            <b>2</b>
+            <strong>الـ AI يرد ويؤهل</strong>
+            <p>يجمع budget والمدينة ونوع الوحدة ويبدأ التوصية في نفس اللحظة.</p>
+          </article>
+          <article class="journey-step">
+            <b>3</b>
+            <strong>الـ CRM يلتقط العميل</strong>
+            <p>تُنشأ lead بكل التفاصيل، وتُوزّع حسب الفرع أو الفريق أو نوع العقار.</p>
+          </article>
+          <article class="journey-step">
+            <b>4</b>
+            <strong>فريق المبيعات يغلق الصفقة</strong>
+            <p>المعاينات والعروض والمتابعة كلها تظل ظاهرة للإدارة في لوحة واحدة.</p>
           </article>
         </div>
       </section>
